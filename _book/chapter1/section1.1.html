@@ -205,9 +205,193 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p>-</p>
-<pre><code> {{&gt;
-</code></pre>
+                                <h2 id="19-&#x5176;&#x4ED6;&#x884C;&#x4E3A;">1.9 &#x5176;&#x4ED6;&#x884C;&#x4E3A;</h2>
+<h3 id="191-&#x5206;&#x4EAB;">1.9.1 &#x5206;&#x4EAB;</h3>
+<h3 id="19-&#x5176;&#x4ED6;&#x884C;&#x4E3A;">1.9 &#x5176;&#x4ED6;&#x884C;&#x4E3A;</h3>
+<h4 id="191-&#x5206;&#x4EAB;">1.9.1 &#x5206;&#x4EAB;</h4>
+<h4 id="192-&#x70B9;&#x8D5E;&#x53D6;&#x6D88;&#x70B9;&#x8D5E;">1.9.2 &#x70B9;&#x8D5E;&amp;&#x53D6;&#x6D88;&#x70B9;&#x8D5E;</h4>
+<p><strong>&#x901A;&#x8FC7;customize-item &#x7C7B;&#xFF0C;&#x7ED1;&#x5B9A;&#x4E86;&#x5BF9;&#x5E94;&#x7684;trackData,&#x8D70;&#x7EDF;&#x4E00;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x4E0A;&#x62A5;&#x903B;&#x8F91;</strong></p>
+<p>&#x70B9;&#x8D5E;&amp;&#x53D6;&#x6D88;&#x70B9;&#x8D5E;, &#x4E0A;&#x62A5;&#x5185;&#x5BB9;&#x7684;&#x5B57;&#x6BB5;&#x4E2D;&#xFF0C; <code>category</code>&#x5B57;&#x6BB5;&#x5BF9;&#x5E94;&#x201C;&#x70B9;&#x8D5E;&#x201D;&#x6216;&#x8005;&#x201C;&#x53D6;&#x6D88;&#x70B9;&#x8D5E;&#x201D;&#x3002;</p>
+<pre><code>   &lt;a class=&quot;{{=moreClass}} customize-item&quot; {{&lt;{__init__: [like__init], track: [&apos;&#x70B9;&#x8D5E;&apos;, trackName, cate, 1, cate]}}}&gt;
+</code></pre><h4 id="193-&#x8D1F;&#x53CD;&#x9988;&#xFF08;&#x5206;&#x4E3A;&#x5E7F;&#x544A;&#x7C7B;&#x3001;&#x975E;&#x5E7F;&#x544A;&#x7C7B;&#xFF09;">1.9.3 &#x8D1F;&#x53CD;&#x9988;&#xFF08;&#x5206;&#x4E3A;&#x5E7F;&#x544A;&#x7C7B;&#x3001;&#x975E;&#x5E7F;&#x544A;&#x7C7B;&#xFF09;</h4>
+<p><strong>&#x51FD;&#x6570;&#xFF1A;</strong> <code>track__dislikeFeed</code></p>
+<pre><code> function track__dislikeFeed(args) {
+     var type = args.type,
+         trackData = {}; //&#x81EA;&#x5B9A;&#x4E49;&#x4E8B;&#x4EF6;&#x6570;&#x636E;
+
+     if (type == &apos;ad&apos;) { //&#x5E7F;&#x544A;&#x6570;&#x636E;
+         _track__adDislikeFeed(args, trackData);
+     } else { //&#x975E;&#x5E7F;&#x544A;&#x6570;&#x636E;
+         _track__itemDislikeFeed(args, trackData);
+     }
+
+     if (args.from == 3) {
+         return;
+     }
+
+     O2oStats__trackEvent({
+         cate: trackData.category,
+         action: trackData.action,
+         name: trackData.name,
+         ext: JSON.stringify(trackData.value),
+     });
+ }
+</code></pre><p><strong>&#x573A;&#x666F;&#xFF1A;</strong>
+ <strong>&#x4E09;&#x79CD;&#x76F8;&#x5173;&#x52A8;&#x4F5C;&#xFF08;&#x4EE3;&#x7801;&#x4E2D;<code>from</code>&#x5B57;&#x6BB5;&#x533A;&#x5206;&#xFF09;&#xFF1A;</strong></p>
+<ul>
+<li>&#x70B9;&#x51FB;&#x8D1F;&#x53CD;&#x9988;&#x6309;&#x94AE;&#x201C;x&#x201D;&#xFF08;&#x8C03;&#x8D77;&#x8D1F;&#x53CD;&#x9988;&#x5F39;&#x7A97;&#xFF09; --1</li>
+<li>&#x70B9;&#x51FB;&#x201C;&#x786E;&#x5B9A;&#x201D;/&#x201C;&#x4E0D;&#x611F;&#x5174;&#x8DA3;&#x201D; &#x6309;&#x94AE;&#xFF08;<code>.dislike__btn</code>&#x7C7B;&#x540D;&#x6807;&#x8BC6;&#xFF0C;&#x5F39;&#x7A97;&#x6D88;&#x5931;&#xFF09; -- 2</li>
+<li><p>&#x70B9;&#x51FB;&#x5F39;&#x7A97;&#x80CC;&#x666F;&#xFF08;&#x5F39;&#x7A97;&#x6D88;&#x5931;&#xFF09; --3</p>
+<p><em>&#x70B9;&#x51FB;&#x4E0D;&#x540C;&#x7406;&#x7531;&#xFF0C;&#x6CA1;&#x6709;&#x89E6;&#x53D1;&#x4E8B;&#x4EF6;&#x4E0A;&#x62A5;&#x3002;</em></p>
+</li>
+</ul>
+<p><strong>&#x6BCF;&#x79CD;&#x52A8;&#x4F5C;&#x5206;&#x4E3A; &#x5E7F;&#x544A;&#x7C7B; &#x548C; &#x975E;&#x5E7F;&#x544A;&#x7C7B;&#xFF0C;&#x5E7F;&#x544A;&#x7C7B;&#x8D1F;&#x53CD;&#x9988;&#x770B;&#x4E0B;&#x65B9;&#x5E7F;&#x544A;&#x7C7B;&#x4E8B;&#x4EF6;&#x3002;</strong></p>
+<p><strong>&#x5907;&#x6CE8;&#xFF1A;</strong>
+   &#x6240;&#x6709;&#x8D1F;&#x53CD;&#x9988;&#x76F8;&#x5173;&#x7684;&#x52A8;&#x4F5C;&#xFF0C;&#x90FD;&#x4F1A;&#x89E6;&#x53D1;<code>track__dislikeFeed</code>&#x51FD;&#x6570;&#xFF0C;&#x91CC;&#x9762;&#x8FDB;&#x884C;&#x5E7F;&#x544A;&#x548C;&#x975E;&#x5E7F;&#x544A;&#x6761;&#x76EE;&#x533A;&#x5206;&#x3002;
+   &#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x770B;<code>_track__itemDislikeFeed</code>&#x51FD;&#x6570;&#xFF0C;&#x975E;&#x5E7F;&#x544A;&#x76F8;&#x5173;&#x7684;&#x8D1F;&#x53CD;&#x9988;&#x4E0A;&#x62A5;&#x3002;</p>
+<p>   &#x91CC;&#x9762;&#x4E0A;&#x62A5;&#x5B57;&#x6BB5;&#x4E2D;<code>action</code>,&#x533A;&#x5206;&#x201C;&#x7CBE;&#x54C1;&#x5E93;/&#x975E;&#x7CBE;&#x54C1;&#x5E93;&#x201D;,</p>
+<pre><code>     if (itemType &amp;&amp; itemType.indexOf(&apos;cms&apos;) &gt; -1) {
+         isCms = true;
+
+         trackData = Object__extend(trackData, {
+             action: &apos;&#x7CBE;&#x54C1;&#x5E93;&apos;,
+         });
+
+         //&#x7CBE;&#x54C1;&#x5E93;&#x5361;&#x7247;&#x53D6;&#x6807;&#x9898;&#x4E3A;&#x53CD;&#x9988;&#x7684;&#x7C7B;&#x522B;
+         $card = Dom__closest(target, &apos;.card&apos;);
+
+         if ($card) {
+             cardTitle = Dom__data($card) &amp;&amp; Dom__data($card).data;
+
+             trackData.value = Object__extend(trackData.value, {
+                 feed_cate: cardTitle || &apos;&apos;,
+             });
+         }
+     } else {
+         isCms = false;
+
+         trackData = Object__extend(trackData, {
+             action: &apos;&#x975E;&#x7CBE;&#x54C1;&#x5E93;&apos;,
+         });
+     }
+</code></pre><p>  <code>category</code>&#x5B57;&#x6BB5;&#xFF0C;&#x533A;&#x5206;&#x4E0D;&#x540C;&#x573A;&#x666F;&#x4E0B;&#x4E0A;&#x62A5;,from &#x5B57;&#x6BB5;&#x5224;&#x65AD;&#x53C2;&#x8003;;</p>
+<pre><code>  switch (from) {
+      case 1:
+          trackData = Object__extend(trackData, {
+              category: &apos;&#x975E;&#x5E7F;&#x544A;&#x8D1F;&#x53CD;&#x9988;&#x6309;&#x94AE;&#x70B9;&#x51FB;&apos;,
+          });
+          break;
+      case 2:
+          if (reasons &amp;&amp; reasons.length) {
+              trackData = Object__extend(trackData, {
+                  category: &apos;&#x975E;&#x5E7F;&#x544A;&#x8D1F;&#x53CD;&#x9988;&#x539F;&#x56E0;&#x63D0;&#x4EA4;&#x70B9;&#x51FB;&apos;,
+              });
+              trackData.value = Object__extend(trackData.value, {
+                  feed_reason: reasons,
+              });
+          } else {
+              trackData = Object__extend(trackData, {
+                  category: &apos;&#x975E;&#x5E7F;&#x544A;&#x8D1F;&#x53CD;&#x9988;&#x65E0;&#x539F;&#x56E0;&#x63D0;&#x4EA4;&#x70B9;&#x51FB;&apos;,
+              });
+          }
+
+          //reachType&#x4E3A;20&#x7684;&#x8D1F;&#x53CD;&#x9988;&#x4E0A;&#x62A5;
+          reachData.ext = reachData.ext || {};
+
+          Object__extend(reachData.ext, {
+              dislike_reason: reasons || [],
+              action: isCms ? &apos;&#x7CBE;&#x54C1;&#x5E93;&apos; : &apos;&#x975E;&#x7CBE;&#x54C1;&#x5E93;&apos;,
+          });
+          // &#x70B9;&#x51FB;&#x4E86; &#x201C;&#x786E;&#x5B9A;&#x201D;/&#x201C;&#x4E0D;&#x611F;&#x5174;&#x8DA3;&#x201D; &#xFF0C;&#x4E0A;&#x62A5;&#x2018;reachNoInterest&#x2019;
+          _track__send(&apos;reachNoInterest&apos;, reachData);
+          break;
+      default:
+          break;
+  }
+</code></pre><h4 id="194-cms&#x5361;&#x7247;">1.9.4 Cms&#x5361;&#x7247;</h4>
+<p> <strong>&#x6839;&#x636E;&#x63A5;&#x53E3;&#x4E0B;&#x53D1;&#x7684;&#x6BCF;&#x4E2A;&#x6761;&#x76EE;&#x4E2D;&#xFF0C;&#x5BF9;&#x5E94;&#x7684; type&#x5B57;&#x6BB5;&#x4E2D;&#xFF0C;&#x662F;&#x5426;&#x5305;&#x542B;&#x201C;cms&#x201D;,&#x5224;&#x65AD;&#x662F;&#x5426;&#x4E3A;&#x7CBE;&#x54C1;&#x5E93;</strong>
+ <strong>&#x573A;&#x666F;&#xFF1A;</strong></p>
+<ul>
+<li>&#x975E;&#x5E7F;&#x544A;&#x8D1F;&#x53CD;&#x9988;&#xFF0C;<code>actions</code>&#x5B57;&#x6BB5;&#xFF0C;&#x533A;&#x5206;&#x7CBE;&#x54C1;&#x5E93;&#x548C;&#x975E;&#x7CBE;&#x54C1;&#x5E93;</li>
+<li>&#x6761;&#x76EE;&#x89E6;&#x8FBE;&#x70B9;&#x51FB;&#x4E8B;&#x4EF6;&#xFF0C;&#x5BF9;&#x7CBE;&#x54C1;&#x5E93;&#x6761;&#x76EE;&#xFF0C;&#x5355;&#x72EC;&#x4E0A;&#x62A5;&#x4E00;&#x6B21;&#xFF1B;<pre><code>//cms&#x4E0A;&#x62A5;
+if (data.itemType &amp;&amp; data.itemType.toLowerCase().indexOf(&apos;cms&apos;) &gt; -1) {
+    O2oStats__trackEvent({
+        cate: &apos;cms&#x5361;&#x7247;&apos;,
+        action: &apos;&#x70B9;&#x51FB;&apos;,
+        name: category || &apos;&#x672A;&#x77E5;&apos;,
+    });
+}
+</code></pre></li>
+</ul>
+<h4 id="195-&#x843D;&#x5730;&#x9875;&#xFF08;&#x89C6;&#x9891;&#x6761;&#x76EE;&#x70B9;&#x51FB;&#x6765;&#x6E90;&#x8FDB;&#x5165;&#x843D;&#x5730;&#x9875;&#xFF09;">1.9.5 &#x843D;&#x5730;&#x9875;&#xFF08;&#x89C6;&#x9891;&#x6761;&#x76EE;&#x70B9;&#x51FB;&#x6765;&#x6E90;&#x8FDB;&#x5165;&#x843D;&#x5730;&#x9875;&#xFF09;</h4>
+<h4 id="196-&#x66F4;&#x591A;&#x6309;&#x94AE;&#x70B9;&#x51FB;">1.9.6 &#x66F4;&#x591A;&#x6309;&#x94AE;&#x70B9;&#x51FB;</h4>
+<ul>
+<li><p>&#x65B0;&#x95FB;&#x7C7B;&#x5361;&#x7247;</p>
+<p><strong>&#x573A;&#x666F;&#xFF1A;</strong></p>
+<p><strong>&#x5907;&#x6CE8;&#xFF1A;</strong></p>
+<pre><code>
+    &lt;a href=&quot;{{=data.buttons[0].url}}&quot; class=&quot;card__more customize-item&quot; {{&lt;{track: data.mtype==&apos;News&apos;?[&apos;&#x65B0;&#x95FB;&#x5361;&#x66F4;&#x591A;&apos;, &apos;&#x70B9;&#x51FB;&apos;, data.title, 1, pathName]: [data.title, &apos;&#x70B9;&#x51FB;&apos;, data.buttons[0].title, 1, pathName]}}}&gt;&#x66F4;&#x591A;&lt;/a&gt;
+</code></pre><p>  &#x5728;tpl &#x6A21;&#x677F;&#x4E2D;&#x7ED1;&#x5B9A; <code>trackData</code>&#x6570;&#x636E;&#xFF0C; &#x8D70;<code>customize-item</code>&#x7C7B;&#x8BC6;&#x522B;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x7EDF;&#x8BA1;&#x903B;&#x8F91;&#x4E0A;&#x62A5;&#x3002;</p>
+</li>
+<li>&#x5176;&#x4ED6;&#x7C7B;&#x5361;&#x7247;
+ <strong>&#x573A;&#x666F;&#xFF1A;</strong> ...</li>
+</ul>
+<h4 id="197-&#x81EA;&#x6709;&#x65B0;&#x95FB;&#x9875;news-cp&#x9879;&#x76EE;">1.9.7 &#x81EA;&#x6709;&#x65B0;&#x95FB;&#x9875;(news-cp&#x9879;&#x76EE;)</h4>
+<h4 id="198-push&#x8C03;&#x8D77;">1.9.8 Push&#x8C03;&#x8D77;</h4>
+<p>  <strong>&#x573A;&#x666F;&#xFF1A;</strong> push &#x8C03;&#x8D77;&#xFF0C;&#x5BA2;&#x6237;&#x7AEF;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x4E2D;&#xFF0C;&#x81EA;&#x5B9A;&#x4E49;&#x4E8B;&#x4EF6;&#x4E0A;&#x62A5;&#x3002;</p>
+<p>  <strong>&#x5907;&#x6CE8;&#xFF1A;</strong></p>
+<pre><code>```  
+    O2oStats__trackEvent({
+     cate: &apos;PUSH&apos;,
+     action: &apos;&#x81EA;&#x5B9A;&#x4E49;&#x63A8;&#x9001;&apos;,
+ });
+
+```
+</code></pre><h3 id="110-&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;">1.10 &#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;</h3>
+<h4 id="&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;">&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;</h4>
+<p>  <strong>&#x81EA;&#x5B9A;&#x4E49;&#x4E8B;&#x4EF6;&#xFF0C;&#x4E0A;&#x62A5;&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;,&#x5728;&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;&#x540E;&#x7684;&#x5BA2;&#x6237;&#x7AEF;&#x65B9;&#x6CD5;&#x56DE;&#x8C03;&#x4E2D;&#x8FDB;&#x884C;&#x4E0A;&#x62A5;&#x3002;</strong></p>
+<pre><code>     O2oStats__trackEvent({
+         cate: &apos;&#x8FDB;&#x5165;&#x77ED;&#x89C6;&#x9891;&apos;,
+         action: &apos;&#x70B9;&#x51FB;&#x77ED;&#x89C6;&#x9891;icon&apos;,
+         name: cate.name,
+         eid: eid,
+         path: cate.name,
+     });
+</code></pre><h3 id="111-&#x9000;&#x51FA;&#x77ED;&#x89C6;&#x9891;">1.11 &#x9000;&#x51FA;&#x77ED;&#x89C6;&#x9891;</h3>
+<p>  <strong>&#x81EA;&#x5B9A;&#x4E49;&#x4E8B;&#x4EF6;&#xFF0C;&#x4E0D;&#x540C;&#x65B9;&#x5F0F;&#x9000;&#x51FA;&#xFF0C;&#x8C03;&#x7528;&#x5BA2;&#x6237;&#x7AEF;&#x65B9;&#x6CD5;&#xFF0C;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x4E2D;&#x4E0A;&#x62A5;&#x4E0D;&#x540C;&#x7684;action</strong></p>
+<pre><code>    switch (from) {
+        case 0:
+            action = &apos;&#x70B9;&#x51FB;back&apos;;
+            break;
+        case 1:
+            action = &apos;&#x70B9;&#x51FB;&#x4E3B;&#x9875;&apos;;
+            break;
+        case 2:
+            action = &apos;&#x70B9;&#x51FB;&#x8D44;&#x8BAF;icon&apos;;
+            break;
+        default:
+            action = &apos;&#x9000;&#x51FA;&#x77ED;&#x89C6;&#x9891;&apos;;
+    }
+
+    O2oStats__trackEvent({
+        cate: &apos;&#x9000;&#x51FA;&#x77ED;&#x89C6;&#x9891;&apos;,
+        action: action,
+        name: cate.name,
+        eid: eid,
+        path: cate.name,
+    });
+</code></pre><p>  <strong>&#x573A;&#x666F;&#xFF1A;</strong></p>
+<ul>
+<li>&#x70B9;&#x51FB;&#x5E95;&#x90E8;&#x8D44;&#x8BAF;icon</li>
+<li>&#x70B9;&#x51FB;back</li>
+<li>&#x70B9;&#x51FB;&#x4E3B;&#x9875;</li>
+<li><p>&#x9000;&#x51FA;&#x77ED;&#x89C6;&#x9891;</p>
+<ul>
+<li>&#x975E;1. 2. 3. &#x60C5;&#x51B5;&#xFF0C;&#x9ED8;&#x8BA4;4. action</li>
+</ul>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -250,7 +434,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Section1.1","level":"1.2.1","depth":2,"next":{"title":"Section1.2","level":"1.2.2","depth":2,"path":"chapter1/section1.2.md","ref":"chapter1/section1.2.md","articles":[]},"previous":{"title":"Chapter1","level":"1.2","depth":1,"path":"chapter1/README.md","ref":"chapter1/README.md","articles":[{"title":"Section1.1","level":"1.2.1","depth":2,"path":"chapter1/section1.1.md","ref":"chapter1/section1.1.md","articles":[]},{"title":"Section1.2","level":"1.2.2","depth":2,"path":"chapter1/section1.2.md","ref":"chapter1/section1.2.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter1/section1.1.md","mtime":"2018-06-16T11:21:35.320Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T11:29:10.658Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Section1.1","level":"1.2.1","depth":2,"next":{"title":"Section1.2","level":"1.2.2","depth":2,"path":"chapter1/section1.2.md","ref":"chapter1/section1.2.md","articles":[]},"previous":{"title":"Chapter1","level":"1.2","depth":1,"path":"chapter1/README.md","ref":"chapter1/README.md","articles":[{"title":"Section1.1","level":"1.2.1","depth":2,"path":"chapter1/section1.1.md","ref":"chapter1/section1.1.md","articles":[]},{"title":"Section1.2","level":"1.2.2","depth":2,"path":"chapter1/section1.2.md","ref":"chapter1/section1.2.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter1/section1.1.md","mtime":"2018-06-16T11:43:05.067Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T11:43:23.017Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
